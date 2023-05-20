@@ -12,7 +12,7 @@ using SampleDb.Models.Contexts;
 namespace SampleDb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230520090223_InitialCreate")]
+    [Migration("20230520101906_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -56,11 +56,10 @@ namespace SampleDb.Migrations
                         .HasColumnName("created_date");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_date");
 
@@ -87,7 +86,6 @@ namespace SampleDb.Migrations
                         .HasColumnName("course_id");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
@@ -97,12 +95,12 @@ namespace SampleDb.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_lesson");
+                        .HasName("pk_lessons");
 
                     b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_lesson_course_id");
+                        .HasDatabaseName("ix_lessons_course_id");
 
-                    b.ToTable("lesson", (string)null);
+                    b.ToTable("lessons", (string)null);
                 });
 
             modelBuilder.Entity("SampleDb.Models.Entity.Otus.User", b =>
@@ -128,9 +126,9 @@ namespace SampleDb.Migrations
                         .HasColumnName("last_name");
 
                     b.HasKey("Id")
-                        .HasName("pk_user");
+                        .HasName("pk_users");
 
-                    b.ToTable("user", (string)null);
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("CourseUser", b =>
@@ -147,7 +145,7 @@ namespace SampleDb.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_course_user_user_users_id");
+                        .HasConstraintName("fk_course_user_users_users_id");
                 });
 
             modelBuilder.Entity("SampleDb.Models.Entity.Otus.Lesson", b =>
@@ -157,7 +155,7 @@ namespace SampleDb.Migrations
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_lesson_courses_course_id");
+                        .HasConstraintName("fk_lessons_courses_course_id");
 
                     b.Navigation("Course");
                 });

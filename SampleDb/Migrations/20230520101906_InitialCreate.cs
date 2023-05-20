@@ -17,9 +17,9 @@ namespace SampleDb.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,7 +27,7 @@ namespace SampleDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "user",
+                name: "users",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -37,23 +37,23 @@ namespace SampleDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_user", x => x.id);
+                    table.PrimaryKey("pk_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "lesson",
+                name: "lessons",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
                     course_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_lesson", x => x.id);
+                    table.PrimaryKey("pk_lessons", x => x.id);
                     table.ForeignKey(
-                        name: "fk_lesson_courses_course_id",
+                        name: "fk_lessons_courses_course_id",
                         column: x => x.course_id,
                         principalTable: "courses",
                         principalColumn: "id",
@@ -77,9 +77,9 @@ namespace SampleDb.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_course_user_user_users_id",
+                        name: "fk_course_user_users_users_id",
                         column: x => x.users_id,
-                        principalTable: "user",
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -90,8 +90,8 @@ namespace SampleDb.Migrations
                 column: "users_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_lesson_course_id",
-                table: "lesson",
+                name: "ix_lessons_course_id",
+                table: "lessons",
                 column: "course_id");
         }
 
@@ -102,10 +102,10 @@ namespace SampleDb.Migrations
                 name: "course_user");
 
             migrationBuilder.DropTable(
-                name: "lesson");
+                name: "lessons");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "users");
 
             migrationBuilder.DropTable(
                 name: "courses");

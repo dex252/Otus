@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SampleDb.Managers.Db;
 using SampleDb.Models.Contexts;
 using SampleDb.Repositories.Db;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SampleDb
 {
@@ -11,13 +14,21 @@ namespace SampleDb
         {
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
+           
+            services.AddControllers()
+                    .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.AllowTrailingCommas = true;
+                        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                        options.JsonSerializerOptions.WriteIndented = true;
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    });
 
-            services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddMvc();
 
-            services.AddScoped(typeof(IDbRepository<>), typeof(EFRepository<>));
+            services.AddScoped<IDbRepository, EFRepository>();
+            services.AddScoped<IDbParametersCreator, DbParametersCreator>();
             services.AddScoped(typeof(DbContext), typeof(DataContext));
 
             services.AddDbContext<DataContext>(options =>
