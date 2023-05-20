@@ -50,13 +50,8 @@ namespace SampleDb.Repositories.Db
             var tableName = $"{typeof(K).Name.ToLower()}_{typeof(T).Name.ToLower()}";
             var sqlTemplate = string.Format(SQL_TEMPLATE, tableName);
 
-            var fromParam = new NpgsqlParameter();
-            fromParam.ParameterName = "from";
-            fromParam.Value = from;
-
-            var toParam = new NpgsqlParameter();
-            toParam.ParameterName = "to";
-            toParam.Value = to;
+            var fromParam = DbParametersCreator.GetParameter("from", from);
+            var toParam = DbParametersCreator.GetParameter("to", to);
             
             var isSuccess = await DbContext.Database.ExecuteSqlRawAsync(sqlTemplate, fromParam, toParam) > 0;
             return isSuccess;

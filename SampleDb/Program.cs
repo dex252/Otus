@@ -28,7 +28,7 @@ namespace SampleDb
             services.AddSwaggerGen();
 
             services.AddScoped<IDbRepository, EFRepository>();
-            services.AddScoped<IDbParametersCreator, DbParametersCreator>();
+            services.AddScoped<IDbParametersCreator, NgParametersCreator>();
             services.AddScoped(typeof(DbContext), typeof(DataContext));
 
             services.AddDbContext<DataContext>(options =>
